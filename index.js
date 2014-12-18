@@ -7,6 +7,6 @@ module.exports = {
   included: function (app) {
     this._super.included(app);
 
-    app.import(app.bowerDirectory + '/masonry/dist/masonry.pkgd.min.js');
+    app.import(app.bowerDirectory + '/jquery-masonry/dist/masonry.pkgd.min.js');
   }
 };

@@ -10,11 +10,11 @@
     "build": "ember build",
     "test": "ember test"
   },
-  "repository": "",
+  "repository": "https://github.com/gmurphey/ember-masonry-grid",
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "Garrett Murphey <gmurphey@gmurphey.com>",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^1.0.0",
@@ -31,9 +31,12 @@
     "express": "^4.8.5",
     "glob": "^4.0.5"
   },
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Quickly and easily add masonry layouts to your app.",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "masonry",
+    "grid",
+    "layout"
   ],
   "ember-addon": {
     "configPath": "tests/dummy/config"

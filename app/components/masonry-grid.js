@@ -19,6 +19,8 @@ var getOptions = function (keys) {
 export default Ember.Component.extend({
   classNames: ['masonry-grid'],
 
+  items: null,
+
   initializeMasonry: function () {
     var options = getOptions.call(this, [
           'containerStyle',
@@ -37,5 +39,5 @@ export default Ember.Component.extend({
         ]);
 
     this.$().masonry(options);
-  }.on('didInsertElement')
+  }.on('didInsertElement').observes('items')
 });

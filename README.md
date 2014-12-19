@@ -47,6 +47,7 @@ For example, if our controller exposes the enumerable property `colors`:
   </div>
   {{/each}}
 {{/masonry-grid}}
+```
 
 Every time the length of the `colors` property is changed, Masonry will account for it and generate a new layout.
 

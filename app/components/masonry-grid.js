@@ -39,5 +39,5 @@ export default Ember.Component.extend({
         ]);
 
     this.$().masonry(options);
-  }.on('didInsertElement').observes('items')
+  }.on('didInsertElement').observes('items.length')
 });

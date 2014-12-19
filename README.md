@@ -11,7 +11,7 @@ The `masonry-grid` component accepts all of the options that `Masonry` exposes. 
 
 For example, if we wanted to a basic `Masonry` view, we'd included the following in our template.
 
-``` javascript
+```
 {{#masonry-grid}}
 	<div class="item">Item 1</div>
 	<div class="item">Item 2</div>
@@ -21,7 +21,7 @@ For example, if we wanted to a basic `Masonry` view, we'd included the following
 
 If we wanted to redefine the `item` class for `Masonry`, we'd write the following:
 
-``` javascript
+```
 {{#masonry-grid itemSelector=".piece"}}
 	<div class="piece">Item 1</div>
 	<div class="piece">Item 2</div>
@@ -32,6 +32,23 @@ If we wanted to redefine the `item` class for `Masonry`, we'd write the followin
 For a full list of options that are exposed, please see the [Masonry options](http://masonry.desandro.com/options.html).
 
 *A small caveat: while Ember allows us to pass most options to components as primitives, it doesn't handle `null` well. If you'd like to use `null` (as `containerStyle`, for example), you'll have to wrap it in quotes (`'null'`).*
+
+### Adding and Removing Items from a Masonry Layout
+
+We can specify an `items` attribute that `ember-masonry-grid` will observe. When the property changes, Masonry will re-initalize itself and update its layout.
+
+For example, if our controller exposes the enumerable property `colors`:
+
+```
+{{#masonry-grid items=colors}}
+  {{#each colors}}
+  <div class="item">
+    Name: {{name}}
+  </div>
+  {{/each}}
+{{/masonry-grid}}
+
+Every time the length of the `colors` property is changed, Masonry will account for it and generate a new layout.
 
 ## Contributing
 If you find an issue or missing functionality, please don't hesistate to open a pull request.

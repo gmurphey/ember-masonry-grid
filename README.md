@@ -2,7 +2,7 @@
 This `ember-cli` addon imports the Masonry library and allows you to quickly and easily build masonry grid views.
 
 ## Installation
-`npm install --save-dev ember-masonry-grid`
+`ember install:addon ember-masonry-grid`
 
 That's it! The Masonry library will automatically be imported in your app, and the `masonry-grid` component will be available to all of your templates.
 

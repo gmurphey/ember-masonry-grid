@@ -36,10 +36,11 @@ export default Ember.Component.extend({
           'stamp',
           'transitionDuration',
           'visibleStyle'
-        ]);
+        ]),
+        _this = this;
 
-    imagesLoaded(this.$(), function(){
-      this.$().masonry(options);
-    }.bind(this));
+    imagesLoaded(this.$(), function () {
+      _this.$().masonry(options);
+    });
   }.on('didInsertElement').observes('items.length')
 });

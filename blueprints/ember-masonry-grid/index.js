@@ -5,6 +5,6 @@ module.exports = {
   },
 
   afterInstall: function () {
-    return this.addBowerPackageToProject('jquery-masonry');
+    return this.addBowerPackagesToProject(['jquery-masonry', 'imagesLoaded']);
   }
 };

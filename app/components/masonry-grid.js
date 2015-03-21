@@ -22,7 +22,6 @@ export default Ember.Component.extend({
   items: null,
 
   initializeMasonry: function () {
-    var _this = this;
     var options = getOptions.call(this, [
           'containerStyle',
           'columnWidth',
@@ -39,8 +38,8 @@ export default Ember.Component.extend({
           'visibleStyle'
         ]);
 
-    imagesLoaded(Ember.$('.masonry-grid'), function(){
-      _this.$().masonry(options);
-    });
+    imagesLoaded(this.$(), function(){
+      this.$().masonry(options);
+    }.bind(this));
   }.on('didInsertElement').observes('items.length')
 });

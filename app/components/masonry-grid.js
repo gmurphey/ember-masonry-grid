@@ -38,6 +38,8 @@ export default Ember.Component.extend({
           'visibleStyle'
         ]);
 
-    this.$().masonry(options);
+    imagesLoaded(this.$(), function(){
+      this.$().masonry(options);
+    }.bind(this));
   }.on('didInsertElement').observes('items.length')
 });

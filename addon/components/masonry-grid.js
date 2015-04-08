@@ -23,6 +23,8 @@ export default Ember.Component.extend({
   options: null,
   items: null,
 
+  masonryInitialized: false,
+
   initializeMasonry: Ember.on('didInsertElement', function () {
     this.set('options', getOptions.call(this, [
       'containerStyle',
@@ -43,11 +45,16 @@ export default Ember.Component.extend({
     this.layoutMasonry();
   }),
 
-  layoutMasonry: Ember.observer('items.length', function () {
+  layoutMasonry: Ember.observer('items.@each', function () {
     var _this = this;
 
     imagesLoaded(this.$(), function () {
+      if (_this.get('masonryInitialized')) {
+        _this.$().masonry('destroy');
+      }
+
       _this.$().masonry(_this.get('options'));
+      _this.set('masonryInitialized', true);
     });
   })
 });

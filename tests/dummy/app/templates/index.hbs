@@ -1,0 +1,11 @@
+<a href="#" {{action 'switchObjects'}}>Switch Models</a>
+
+{{#masonry-grid items=currentObject.items}}
+  {{#each currentObject.items}}
+    <div class="item">
+      <img src="{{imgsrc}}"><br>
+      {{name}}<br>
+      {{input type="text" value=name}}
+    </div>
+  {{/each}}
+{{/masonry-grid}}

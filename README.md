@@ -64,8 +64,7 @@ If you find an issue or missing functionality, please don't hesistate to open a 
 * Visit your app at http://localhost:4200.
 
 ### Running Tests
-* `ember test`
-* `ember test --server`
+* `npm test`
 
 ### Building
 * `ember build`

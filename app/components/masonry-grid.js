@@ -19,28 +19,34 @@ var getOptions = function (keys) {
 export default Ember.Component.extend({
   classNames: ['masonry-grid'],
 
+  options: null,
   items: null,
 
-  initializeMasonry: function () {
-    var options = getOptions.call(this, [
-          'containerStyle',
-          'columnWidth',
-          'gutter',
-          'hiddenStyle',
-          'isFitWidth',
-          'isInitLayout',
-          'isOriginLeft',
-          'isOriginTop',
-          'isResizeBound',
-          'itemSelector',
-          'stamp',
-          'transitionDuration',
-          'visibleStyle'
-        ]),
-        _this = this;
+  initializeMasonry: Ember.on('didInsertElement', function () {
+    this.set('options', getOptions.call(this, [
+      'containerStyle',
+      'columnWidth',
+      'gutter',
+      'hiddenStyle',
+      'isFitWidth',
+      'isInitLayout',
+      'isOriginLeft',
+      'isOriginTop',
+      'isResizeBound',
+      'itemSelector',
+      'stamp',
+      'transitionDuration',
+      'visibleStyle'
+    ])),
+
+    this.layoutMasonry();
+  }),
+
+  layoutMasonry: Ember.observer('items.length', function () {
+    var _this = this;
 
     imagesLoaded(this.$(), function () {
-      _this.$().masonry(options);
+      _this.$().masonry(_this.get('options'));
     });
-  }.on('didInsertElement').observes('items.length')
+  })
 });

@@ -48,13 +48,25 @@ export default Ember.Component.extend({
   layoutMasonry: Ember.observer('items.@each', function () {
     var _this = this;
 
-    imagesLoaded(this.$(), function () {
-      if (_this.get('masonryInitialized')) {
-        _this.$().masonry('destroy');
-      }
+    if (this.items && this.items.then) {
+        this.items.then(fulfill, reject);
+    } else {
+        fulfill();
+    }
 
-      _this.$().masonry(_this.get('options'));
-      _this.set('masonryInitialized', true);
-    });
+    function fulfill() {
+        imagesLoaded(_this.$(), function () {
+          if (_this.get('masonryInitialized')) {
+            _this.$().masonry('destroy');
+          }
+
+          _this.$().masonry(_this.get('options'));
+          _this.set('masonryInitialized', true);
+        });
+    }
+
+    function reject(reason) {
+        console.log(reason);
+    }
   })
 });

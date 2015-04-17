@@ -64,7 +64,9 @@ export default Ember.Component.extend({
                     _this.$().masonry(_this.get('options'));
                 }
 				
-				_this.set('masonryInitialized', true);
+                if (!(_this.get('isDestroyed') || _this.get('isDestroying'))) {
+                    _this.set('masonryInitialized', true);
+                }
             });
         }
 

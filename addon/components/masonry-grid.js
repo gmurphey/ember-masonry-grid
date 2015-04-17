@@ -2,71 +2,74 @@
 import Ember from 'ember';
 
 var getOptions = function (keys) {
-  var properties = this.getProperties(keys);
+    var properties = this.getProperties(keys);
 
-  Object.keys(properties).forEach(function (key) {
-    if (properties[key] === "null") {
-      properties[key] = null;
-    }
+    Object.keys(properties).forEach(function (key) {
+        if (properties[key] === "null") {
+            properties[key] = null;
+        }
 
-    if (properties[key] === undefined) {
-      delete properties[key];
-    }
-  });
+        if (properties[key] === undefined) {
+            delete properties[key];
+        }
+    });
 
-  return properties;
+    return properties;
 };
 
 export default Ember.Component.extend({
-  classNames: ['masonry-grid'],
+    classNames: ['masonry-grid'],
 
-  options: null,
-  items: null,
+    options: null,
+    items: null,
 
-  masonryInitialized: false,
+    masonryInitialized: false,
 
-  initializeMasonry: Ember.on('didInsertElement', function () {
-    this.set('options', getOptions.call(this, [
-      'containerStyle',
-      'columnWidth',
-      'gutter',
-      'hiddenStyle',
-      'isFitWidth',
-      'isInitLayout',
-      'isOriginLeft',
-      'isOriginTop',
-      'isResizeBound',
-      'itemSelector',
-      'stamp',
-      'transitionDuration',
-      'visibleStyle'
-    ]));
+    initializeMasonry: Ember.on('didInsertElement', function () {
+        this.set('options', getOptions.call(this, [
+            'containerStyle',
+            'columnWidth',
+            'gutter',
+            'hiddenStyle',
+            'isFitWidth',
+            'isInitLayout',
+            'isOriginLeft',
+            'isOriginTop',
+            'isResizeBound',
+            'itemSelector',
+            'stamp',
+            'transitionDuration',
+            'visibleStyle'
+        ]));
 
-    this.layoutMasonry();
-  }),
+        this.layoutMasonry();
+    }),
 
-  layoutMasonry: Ember.observer('items.@each', function () {
-    var _this = this;
+    layoutMasonry: Ember.observer('items.@each', function () {
+        var _this = this;
 
-    if (this.items && this.items.then) {
-        this.items.then(fulfill, reject);
-    } else {
-        fulfill();
-    }
+        if (this.items && this.items.then) {
+            this.items.then(fulfill, reject);
+        } else {
+            fulfill();
+        }
 
-    function fulfill() {
-        imagesLoaded(_this.$(), function () {
-          if (_this.get('masonryInitialized')) {
-            _this.$().masonry('destroy');
-          }
+        function fulfill() {
+            imagesLoaded(_this.$(), function () {
+                if (_this.get('masonryInitialized') && _this.$()) {
+                    _this.$().masonry('destroy');
+                }
 
-          _this.$().masonry(_this.get('options'));
-          _this.set('masonryInitialized', true);
-        });
-    }
+                if (_this.$()) {
+                    _this.$().masonry(_this.get('options'));
+                }
+				
+				_this.set('masonryInitialized', true);
+            });
+        }
 
-    function reject(reason) {
-        console.log(reason);
-    }
-  })
+        function reject(reason) {
+            console.log(reason);
+        }
+    })
 });

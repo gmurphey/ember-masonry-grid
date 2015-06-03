@@ -42,10 +42,10 @@ export default Ember.Component.extend({
       'visibleStyle'
     ]));
 
-    this.layoutMasonry();
+    this.resetMasonry();
   }),
 
-  layoutMasonry: Ember.observer('items.@each', function () {
+  resetMasonry: Ember.observer('items', function () {
     var _this = this;
 
     imagesLoaded(this.$(), function () {
@@ -56,5 +56,14 @@ export default Ember.Component.extend({
       _this.$().masonry(_this.get('options'));
       _this.set('masonryInitialized', true);
     });
-  })
+  }),
+
+  reloadMasonry: Ember.observer('items.@each', function () {
+    var _this = this;
+
+    imagesLoaded(this.$(), function () {
+      _this.$().masonry('reloadItems');
+      _this.$().masonry();
+    });
+  }),
 });

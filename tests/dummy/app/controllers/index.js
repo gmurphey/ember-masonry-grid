@@ -1,37 +1,36 @@
 import Ember from 'ember';
 
-export default Ember.ArrayController.extend({
+const {
+  Controller,
+  get
+} = Ember;
+
+export default Controller.extend({
   first: true,
-  currentObject: null,
 
-  init: function () {
-    this._super.apply(this, arguments);
+  currentObject: Ember.computed('first', 'model', function() {
+    let modelIndex = this.get('first') ? 0 : 1;
 
-    var model = [
-      { 'items': Ember.A([]) },
-      { 'items': Ember.A([]) }
-    ];
-
-    model.forEach(function (obj) {
-      for (let i = 0; i < 20; i++) {
-        obj['items'].push({
-          imgsrc: 'https://placekitten.com/g/200/300',
-          name: 'Mittens'
-        });
-      }
-    });
-
-    model = Ember.A(model);
-
-    this.set('model', model);
-    this.set('currentObject', this.get('model').objectAt(0));
-  },
+    return this.get('model').objectAt(modelIndex);
+  }),
 
   actions: {
-    switchObject: function () {
-      this.set('first', !this.get('first'));
+    switchObjects() {
+      this.toggleProperty('first');
+    },
 
-      this.set('currentObject', this.get('model').objectAt(this.get('first') ? 0 : 1));
+    onLayout() {
+      console.log('onLayout', arguments);
+    },
+
+    onLayoutComplete() {
+      console.log('onLayoutComplete', arguments);
+    },
+
+    onItemClick(ev, item) {
+      Ember.run(() => {
+        get(this, 'currentObject').removeObject(item);
+      });
     }
   }
 });

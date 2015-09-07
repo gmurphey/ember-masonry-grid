@@ -45,7 +45,7 @@ export default Ember.Component.extend({
     this.layoutMasonry();
   }),
 
-  layoutMasonry: Ember.observer('items.@each', function () {
+  layoutMasonry: Ember.observer('items.[]', function () {
     var _this = this;
 
     imagesLoaded(this.$(), function () {

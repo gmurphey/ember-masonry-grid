@@ -37,6 +37,7 @@ export default Ember.Component.extend({
       'isOriginTop',
       'isResizeBound',
       'itemSelector',
+      'percentPosition',
       'stamp',
       'transitionDuration',
       'visibleStyle'

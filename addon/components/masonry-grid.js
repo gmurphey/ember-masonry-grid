@@ -47,6 +47,7 @@ export default Ember.Component.extend({
 
   layoutMasonry: Ember.observer('items.[]', function () {
     var _this = this;
+    this.set('isVisible', false);
 
     imagesLoaded(this.$(), function () {
       if (_this.get('masonryInitialized')) {
@@ -55,6 +56,7 @@ export default Ember.Component.extend({
 
       _this.$().masonry(_this.get('options'));
       _this.set('masonryInitialized', true);
+      _this.set('isVisible', true);
     });
   })
 });

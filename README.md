@@ -42,9 +42,9 @@ If we wanted to redefine the `itemSelector` for `Masonry`, we'd write the follow
 {{/masonry-grid}}
 ```
 
-For a full list of options that are exposed, please see the [Masonry options](http://masonry.desandro.com/options.html).
+This would also change the classes for the underlying `masonry-item` components.
 
-*A small caveat: while Ember allows us to pass most options to components as primitives, it doesn't handle `null` well. If you'd like to use `null` (as `containerStyle`, for example), you'll have to wrap it in quotes (`'null'`).*
+For a full list of options that are exposed, please see the [Masonry options](http://masonry.desandro.com/options.html).
 
 ## Custom Layouts
 
@@ -52,7 +52,7 @@ If you want more control over the each `masonry-item`, you can supply a custom l
 
 ```
 {{#masonry-grid items=items customLayout=true as |item index grid|}}
-  {{#masonry-item item=item grid=grid}}
+  {{#masonry-item item=item grid=grid }}
     {{item.name}}
   {{/masonry-item}}
 {{/masonry-grid}}
@@ -63,6 +63,16 @@ If you want more control over the each `masonry-item`, you can supply a custom l
 While `Masonry` exposes `prepend`, `append`, and `remove` methods, we don't have to worry about them. You can add and remove items from your `items` array and it will have the same effect.
 
 Every time `items` is updated, Masonry will account for it and generate a new layout.
+
+### Available Actions
+
+The following actions are made available by `masonry-grid`.
+
+* `onLayoutComplete (layout)`  
+Triggered each time Masonry finishes a layout
+
+* `onItemClick (event, item)`  
+Triggered when a click event occurs (or bubbles) on a `masonry-item`
 
 ## Contributing
 If you find an issue or missing functionality, please don't hesistate to open a pull request.

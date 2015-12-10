@@ -8,8 +8,8 @@ module.exports = {
     this._super.included(app);
 
     app.import({
-      development: app.bowerDirectory + '/jquery-masonry/dist/masonry.pkgd.js',
-      production: app.bowerDirectory + '/jquery-masonry/dist/masonry.pkgd.min.js'
+      development: app.bowerDirectory + '/masonry/dist/masonry.pkgd.js',
+      production: app.bowerDirectory + '/masonry/dist/masonry.pkgd.min.js'
     });
 
     app.import({

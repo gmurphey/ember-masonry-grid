@@ -52,10 +52,13 @@ export default Component.extend({
     return get(this, 'itemSelector').replace('.', '');
   }),
 
+  init() {
+    this._super(...arguments);
+    defineProperty(this, 'options', computed.apply(this, [...MASONRY_OPTION_KEYS, this._createOptionsHash]));
+  },
+
   didInsertElement() {
     this._super(...arguments);
-
-    defineProperty(this, 'options', computed(MASONRY_OPTION_KEYS, this._createOptionsHash));
     this.layoutMasonry();
   },
 

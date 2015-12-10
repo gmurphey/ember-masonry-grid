@@ -6,7 +6,7 @@ const {
   Component,
   computed,
   observer,
-  defineProperty,
+  getProperties,
   get,
   set
 } = Ember;
@@ -52,10 +52,21 @@ export default Component.extend({
     return get(this, 'itemSelector').replace('.', '');
   }),
 
-  init() {
-    this._super(...arguments);
-    defineProperty(this, 'options', computed.apply(this, [...MASONRY_OPTION_KEYS, this._createOptionsHash]));
-  },
+  options: computed.apply(this, [...MASONRY_OPTION_KEYS, function() {
+    let options = getProperties(this, MASONRY_OPTION_KEYS);
+
+    Object.keys(options).forEach((key) => {
+      if (options[key] === 'null') {
+        options[key] = null;
+      }
+
+      if (options[key] === undefined) {
+        delete options[key];
+      }
+    });
+
+    return options;
+  }]),
 
   didInsertElement() {
     this._super(...arguments);
@@ -93,21 +104,5 @@ export default Component.extend({
     onItemClick() {
       this.sendAction('onItemClick', ...arguments);
     }
-  },
-
-  _createOptionsHash() {
-    let options = this.getProperties(MASONRY_OPTION_KEYS);
-
-    Object.keys(options).forEach((key) => {
-      if (options[key] === 'null') {
-        options[key] = null;
-      }
-
-      if (options[key] === undefined) {
-        delete options[key];
-      }
-    });
-
-    return options;
   }
 });

@@ -67,7 +67,7 @@ export default Component.extend({
     let masonry = get(this, 'masonry');
 
     Ember.run.scheduleOnce('afterRender', this, () => {
-      imagesLoaded(this.element, () => {
+      imagesLoaded(get(this, 'element'), () => {
         if (masonry) {
           masonry.reloadItems();
         } else {

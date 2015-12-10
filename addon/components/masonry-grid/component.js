@@ -11,6 +11,10 @@ const {
   set
 } = Ember;
 
+const {
+  htmlSafe
+} = Ember.String;
+
 const MASONRY_OPTION_KEYS = [
   'containerStyle',
   'columnWidth',
@@ -30,11 +34,9 @@ const MASONRY_OPTION_KEYS = [
 export default Component.extend({
   layout,
   classNames: ['masonry-grid'],
-  attributeBindings: ['style:masonryGridStyle'],
+  attributeBindings: ['masonryGridStyle:style'],
 
-  masonryGridStyle: computed(function() {
-    return 'position: relative';
-  }),
+  masonryGridStyle: htmlSafe('position: relative'),
 
   // masonry default options
   // overriding the default `isInitLayout` value allows us to attach an event for

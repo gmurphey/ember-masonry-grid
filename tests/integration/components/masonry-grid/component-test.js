@@ -21,7 +21,9 @@ test('it renders a default layout', function(assert) {
 
   assert.expect(4);
 
-  this.set('items', Ember.A(items));
+  Ember.run(() => {
+    this.set('items', Ember.A(items));
+  });
 
   this.render(hbs`
     {{#masonry-grid items=items as |item|}}
@@ -45,8 +47,10 @@ test('the masonry-item class is based on the itemSelector passed to masonry-grid
 
   assert.expect(1);
 
-  this.set('items', Ember.A(items));
-  this.set('customSelector', '.piece');
+  Ember.run(() => {
+    this.set('items', Ember.A(items));
+    this.set('customSelector', '.piece');
+  });
 
   this.render(hbs `
     {{#masonry-grid items=items itemSelector=customSelector as |item|}}
@@ -65,7 +69,9 @@ test('it renders a custom layout', function(assert) {
 
   assert.expect(4);
 
-  this.set('items', Ember.A(items));
+  Ember.run(() => {
+    this.set('items', Ember.A(items));
+  });
 
   this.render(hbs`
     {{#masonry-grid items=items customLayout=true as |item index grid|}}
@@ -86,33 +92,21 @@ test('it renders a custom layout', function(assert) {
   });
 });
 
-test('it reloads masonry when items are added or removed', function(assert) {
-  let expectedLength = 2;
+test('it triggers masonry\'s layoutComplete event after rendering', function(assert) {
+  assert.expect(1);
 
-  assert.expect(3);
-
-  this.set('items', Ember.A(items));
-  this.on('layoutComplete', (layout) => {
-    assert.equal(expectedLength, layout.length, 'masonry knows about new and removed items');
+  Ember.run(() => {
+    this.set('items', Ember.A(items));
+    this.on('layoutComplete', () => {
+      assert.ok(true, 'layoutComplete action called');
+    });
   });
 
   this.render(hbs `
-    {{#masonry-grid items=items onLayoutComplete='layoutComplete'}}
+    {{#masonry-grid items=items onLayoutComplete=(action 'layoutComplete')}}
       {{item.name}}
     {{/masonry-grid}}
   `);
-
-  expectedLength = 3;
-
-  Ember.run(() => {
-    this.get('items').pushObject({ name: 'three' });
-  });
-
-  expectedLength = 2;
-
-  Ember.run(() => {
-    this.get('items').removeAt(0);
-  });
 });
 
 test('it triggers a click event when an item is clicked', function(assert) {
@@ -130,8 +124,9 @@ test('it triggers a click event when an item is clicked', function(assert) {
   });
 
   this.render(hbs `
-    {{#masonry-grid items=items onItemClick='itemClicked' onLayoutComplete='layoutComplete' as |item|}}
+    {{#masonry-grid items=items onItemClick=(action 'itemClicked') onLayoutComplete='layoutComplete' as |item|}}
       {{item.name}}
     {{/masonry-grid}}
   `);
 });
+

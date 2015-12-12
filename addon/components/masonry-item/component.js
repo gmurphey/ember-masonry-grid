@@ -18,9 +18,14 @@ export default Component.extend({
 
   masonryItemStyle: htmlSafe('position: absolute'),
 
-  click(ev) {
-    this.sendAction('onItemClick', ev, get(this, 'item'));
-  },
+  itemClass: computed.oneWay('grid.itemClass'),
 
-  itemClass: computed.oneWay('grid.itemClass')
+  click(ev) {
+    const onItemClick = get(this, 'onItemClick');
+    const item = get(this, 'item');
+
+    if (onItemClick && typeof onItemClick === 'function') {
+      onItemClick(ev, item);
+    }
+  }
 });

@@ -2,7 +2,8 @@ import Ember from 'ember';
 
 const {
   Controller,
-  get
+  get,
+  set
 } = Ember;
 
 export default Controller.extend({
@@ -17,6 +18,13 @@ export default Controller.extend({
   actions: {
     switchObjects() {
       this.toggleProperty('first');
+    },
+
+    switchGutter() {
+      const gutter = get(this, 'gutter');
+      const newGutter = (gutter === 10) ? 0 : 10;
+
+      set(this, 'gutter', newGutter);
     },
 
     onLayout() {

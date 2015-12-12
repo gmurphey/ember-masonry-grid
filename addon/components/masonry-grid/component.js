@@ -5,7 +5,7 @@ import layout from './template';
 const {
   Component,
   computed,
-  observer,
+  defineProperty,
   getProperties,
   get,
   set
@@ -15,7 +15,7 @@ const {
   htmlSafe
 } = Ember.String;
 
-const MASONRY_OPTION_KEYS = [
+const MASONRY_OPTION_KEYS = Ember.A([
   'containerStyle',
   'columnWidth',
   'gutter',
@@ -29,22 +29,21 @@ const MASONRY_OPTION_KEYS = [
   'stamp',
   'transitionDuration',
   'visibleStyle'
-];
+]);
 
 export default Component.extend({
   layout,
   classNames: ['masonry-grid'],
-  attributeBindings: ['masonryGridStyle:style'],
-
-  masonryGridStyle: htmlSafe('position: relative'),
 
   // masonry default options
   // overriding the default `isInitLayout` value allows us to attach an event for
   // `layoutComplete` before the first render
   isInitLayout: false,
   itemSelector: '.masonry-item',
+  attributeBindings: ['masonryGridStyle:style'],
 
-  items: Ember.A(),
+  masonryGridStyle: htmlSafe('position: relative'),
+
   customLayout: false,
   masonry: null,
 
@@ -52,34 +51,31 @@ export default Component.extend({
     return get(this, 'itemSelector').replace('.', '');
   }),
 
-  options: computed.apply(this, [...MASONRY_OPTION_KEYS, function() {
-    let options = getProperties(this, MASONRY_OPTION_KEYS);
+  init() {
+    this._super(...arguments);
+    defineProperty(this, 'options', computed.apply(this, [...MASONRY_OPTION_KEYS, this._computeOptions]));
+  },
 
-    Object.keys(options).forEach((key) => {
-      if (options[key] === 'null') {
-        options[key] = null;
-      }
+  didUpdateAttrs(attrsObj) {
+    this._super(...arguments);
 
-      if (options[key] === undefined) {
-        delete options[key];
-      }
+    const shouldRebuild = MASONRY_OPTION_KEYS.any((option) => {
+      return (attrsObj.newAttrs[option] !== attrsObj.oldAttrs[option]);
     });
 
-    return options;
-  }]),
-
-  didInsertElement() {
-    this._super(...arguments);
-    this.layoutMasonry();
+    if (shouldRebuild) {
+      this._destroyMasonry();
+    }
   },
 
   willDestroyElement() {
     this._super(...arguments);
-
-    get(this, 'masonry').destroy();
+    this._destroyMasonry();
   },
 
-  layoutMasonry: observer('items.[]', function() {
+  didRender() {
+    this._super(...arguments);
+
     let masonry = get(this, 'masonry');
 
     Ember.run.scheduleOnce('afterRender', this, () => {
@@ -98,11 +94,31 @@ export default Component.extend({
         masonry.layout();
       });
     });
-  }),
+  },
 
-  actions: {
-    onItemClick() {
-      this.sendAction('onItemClick', ...arguments);
+  _computeOptions() {
+    let options = getProperties(this, MASONRY_OPTION_KEYS);
+
+    Object.keys(options).forEach((key) => {
+      if (options[key] === 'null') {
+        options[key] = null;
+      }
+
+      if (options[key] === undefined) {
+        delete options[key];
+      }
+    });
+
+    return options;
+  },
+
+  _destroyMasonry() {
+    const masonry = get(this, 'masonry');
+
+    if (masonry) {
+      masonry.destroy();
     }
+
+    set(this, 'masonry', undefined);
   }
 });

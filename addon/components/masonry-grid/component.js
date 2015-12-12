@@ -68,11 +68,6 @@ export default Component.extend({
     }
   },
 
-  willDestroyElement() {
-    this._super(...arguments);
-    this._destroyMasonry();
-  },
-
   didRender() {
     this._super(...arguments);
 
@@ -94,6 +89,11 @@ export default Component.extend({
         masonry.layout();
       });
     });
+  },
+
+  willDestroyElement() {
+    this._super(...arguments);
+    this._destroyMasonry();
   },
 
   _computeOptions() {

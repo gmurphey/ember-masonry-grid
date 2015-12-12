@@ -1,4 +1,5 @@
 import { moduleForComponent, test } from 'ember-qunit';
+import sinon from 'sinon';
 
 moduleForComponent('masonry-grid', 'Unit | Component | masonry grid', {
   // Specify the other units that are required for this test
@@ -41,4 +42,48 @@ test('the options hash updates when masonry properties are changed', function(as
   component.set('transitionDuration', '0.5s');
 
   assert.equal(component.get('options.transitionDuration'), '0.5s');
+});
+
+test('didUpdateAttrs calls super and destroys masonry if any options have changed', function(assert) {
+  let component = this.subject();
+  let args = [{
+    oldAttrs: {
+      gutter: 0
+    },
+    newAttrs: {
+      gutter: 10
+    }
+  }];
+
+  component._super = sinon.stub();
+  component._destroyMasonry = sinon.stub();
+
+  component.didUpdateAttrs(...args);
+
+  assert.ok(component._super.calledOnce, '_super was called once');
+  assert.deepEqual(component._super.args[0], args, '_super was called with the attrs passed to didUpdateAttrs');
+
+  assert.ok(component._destroyMasonry.calledOnce, 'masonry was destroyed');
+});
+
+test('didUpdateAttrs does nothing if no masonry-specific options were changed', function(assert) {
+  let component = this.subject();
+  let args = [{
+    oldAttrs: {
+      gutter: 10
+    },
+    newAttrs: {
+      gutter: 10
+    }
+  }];
+
+  component._super = sinon.stub();
+  component._destroyMasonry = sinon.stub();
+
+  component.didUpdateAttrs(...args);
+
+  assert.ok(component._super.calledOnce, '_super was called once');
+  assert.deepEqual(component._super.args[0], args, '_super was called with the attrs passed to didUpdateAttrs');
+
+  assert.ok(component._destroyMasonry.notCalled, 'masonry is not destroyed');
 });

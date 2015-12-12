@@ -1,8 +1,9 @@
 <button {{action 'switchObjects'}}>Switch Models</button>
 <button {{action 'appendItem' currentObject}}>Append Item</button>
 <button {{action 'prependItem' currentObject}}>Prepend Item</button>
+<button {{action 'switchGutter'}}>Switch Gutter</button>
 
-{{#masonry-grid items=currentObject
+{{#masonry-grid items=currentObject gutter=gutter
   onLayout=(action 'onLayout')
   onLayoutComplete=(action 'onLayoutComplete')
   onItemClick=(action 'onItemClick')

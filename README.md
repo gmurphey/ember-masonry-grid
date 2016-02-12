@@ -28,7 +28,7 @@ export default Ember.Controller.extend({
 
 And in our template:
 
-```
+```hbs
 {{#masonry-grid items=items as |item|}}
   {{item.name}}
 {{/masonry-grid}}
@@ -36,7 +36,7 @@ And in our template:
 
 If we wanted to redefine the `itemSelector` for `Masonry`, we'd write the following:
 
-```
+```hbs
 {{#masonry-grid items=items itemSelector=".piece" as |item|}}
   {{item.name}}
 {{/masonry-grid}}
@@ -50,7 +50,7 @@ For a full list of options that are exposed, please see the [Masonry options](ht
 
 If you want more control over the each `masonry-item`, you can supply a custom layout to `masonry-grid`.
 
-```
+```hbs
 {{#masonry-grid items=items customLayout=true as |item index grid|}}
   {{#masonry-item item=item grid=grid }}
     {{item.name}}

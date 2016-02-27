@@ -56,11 +56,11 @@ export default Component.extend({
     defineProperty(this, 'options', computed.apply(this, [...MASONRY_OPTION_KEYS, this._computeOptions]));
   },
 
-  didUpdateAttrs(attrsObj) {
+  didUpdateAttrs() {
     this._super(...arguments);
 
     const shouldRebuild = MASONRY_OPTION_KEYS.any((option) => {
-      return (attrsObj.newAttrs[option] !== attrsObj.oldAttrs[option]);
+      return (get(this, `_cachedOptions.${option}`) !== get(this, `options.${option}`));
     });
 
     if (shouldRebuild) {
@@ -68,25 +68,35 @@ export default Component.extend({
     }
   },
 
+  didReceiveAttrs() {
+    set(this, '_cachedOptions', get(this, 'options'));
+  },
+
+  didInsertElement() {
+    this._super(...arguments);
+
+    this._initializeMasonry();
+  },
+
   didRender() {
     this._super(...arguments);
 
-    let masonry = get(this, 'masonry');
-
     Ember.run.scheduleOnce('afterRender', this, () => {
-      imagesLoaded(get(this, 'element'), () => {
-        if (masonry) {
-          masonry.reloadItems();
-        } else {
-          const options = get(this, 'options');
-          masonry = set(this, 'masonry', new Masonry(get(this, 'element'), options));
+      let masonry = get(this, 'masonry');
+      let imageWatcher = new imagesLoaded(get(this, 'element'));
 
-          masonry.on('layoutComplete', (layout) => {
-            this.sendAction('onLayoutComplete', layout);
-          });
-        }
+      if (!masonry) {
+        masonry = this._initializeMasonry();
+      }
 
+      masonry.reloadItems();
+
+      imageWatcher.on('progress', () => {
         masonry.layout();
+      });
+
+      imageWatcher.on('always', () => {
+        this.sendAction('onLayoutComplete', masonry);
       });
     });
   },
@@ -112,8 +122,13 @@ export default Component.extend({
     return options;
   },
 
+  _initializeMasonry() {
+    const options = get(this, 'options');
+    return set(this, 'masonry', new Masonry(get(this, 'element'), options));
+  },
+
   _destroyMasonry() {
-    const masonry = get(this, 'masonry');
+    let masonry = get(this, 'masonry');
 
     if (masonry) {
       masonry.destroy();

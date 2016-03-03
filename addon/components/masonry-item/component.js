@@ -20,6 +20,14 @@ export default Component.extend({
 
   itemClass: computed.oneWay('grid.itemClass'),
 
+  didUpdate() {
+    let masonry = this.get('grid.masonry');
+
+    if (masonry) {
+      masonry.layout();
+    }
+  },
+
   click(ev) {
     const onItemClick = get(this, 'onItemClick');
     const item = get(this, 'item');

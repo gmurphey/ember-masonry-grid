@@ -1,3 +1,4 @@
+var RSVP = require('rsvp');
 module.exports = {
   name: 'ember-masonry-grid',
   description: 'Add ember-masonry-grid bower dependencies to app.',
@@ -6,9 +7,13 @@ module.exports = {
   },
 
   afterInstall: function () {
-    return this.addBowerPackagesToProject([
-      { name: 'masonry' },
-      { name: 'imagesloaded' }
+    return RSVP.all([
+        this.addBowerPackageToProject('masonry'),
+        this.addPackagesToProject([
+            { name: 'imagesloaded' },
+            { name: 'ember-browserify' },
+            { name: 'rsvp' }
+        ])
     ]);
   }
 };

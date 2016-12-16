@@ -18,8 +18,8 @@
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.2.0",
-    "ember-cli": "2.2.0-beta.1",
     "ember-ajax": "0.7.1",
+    "ember-cli": "2.2.0-beta.1",
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-content-security-policy": "0.4.0",
     "ember-cli-dependency-checker": "^1.2.0",
@@ -32,14 +32,17 @@
     "ember-disable-prototype-extensions": "^1.0.0",
     "ember-disable-proxy-controllers": "^1.0.1",
     "ember-export-application-global": "^1.0.4",
+    "ember-resolver": "^2.0.3",
     "ember-sinon": "0.3.0",
     "ember-suave": "1.2.3",
-    "ember-resolver": "^2.0.3",
-    "ember-try": "~0.0.8"
+    "ember-try": "~0.0.8",
+    "imagesloaded": "^4.1.1"
   },
   "dependencies": {
+    "ember-browserify": "^1.1.13",
     "ember-cli-babel": "^5.1.5",
-    "ember-cli-htmlbars": "^1.0.1"
+    "ember-cli-htmlbars": "^1.0.1",
+    "rsvp": "^3.3.3"
   },
   "description": "Quickly and easily add masonry layouts to your app.",
   "keywords": [

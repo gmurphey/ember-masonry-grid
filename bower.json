@@ -9,7 +9,6 @@
     "jquery": "^1.11.3",
     "loader.js": "^3.5.0",
     "qunit": "~1.20.0",
-    "imagesloaded": "~3.2.0",
     "masonry": "~3.3.2",
     "sinonjs": "~1.17.1"
   }

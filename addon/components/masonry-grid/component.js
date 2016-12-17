@@ -1,5 +1,6 @@
-/* global imagesLoaded, Masonry */
+/* global Masonry */
 import Ember from 'ember';
+import imagesLoaded from 'npm:imagesloaded';
 import layout from './template';
 
 const {
@@ -8,14 +9,13 @@ const {
   defineProperty,
   getProperties,
   get,
-  set
+  set,
+  String: { htmlSafe },
+  run: { scheduleOnce },
+  A
 } = Ember;
 
-const {
-  htmlSafe
-} = Ember.String;
-
-const MASONRY_OPTION_KEYS = Ember.A([
+const MASONRY_OPTION_KEYS = A([
   'containerStyle',
   'columnWidth',
   'gutter',
@@ -59,7 +59,7 @@ export default Component.extend({
   didUpdateAttrs(attrsObj) {
     this._super(...arguments);
 
-    const shouldRebuild = MASONRY_OPTION_KEYS.any((option) => {
+    let shouldRebuild = MASONRY_OPTION_KEYS.any((option) => {
       return (attrsObj.newAttrs[option] !== attrsObj.oldAttrs[option]);
     });
 
@@ -73,12 +73,12 @@ export default Component.extend({
 
     let masonry = get(this, 'masonry');
 
-    Ember.run.scheduleOnce('afterRender', this, () => {
+    scheduleOnce('afterRender', this, () => {
       imagesLoaded(get(this, 'element'), () => {
         if (masonry) {
           masonry.reloadItems();
         } else {
-          const options = get(this, 'options');
+          let options = get(this, 'options');
           masonry = set(this, 'masonry', new Masonry(get(this, 'element'), options));
 
           masonry.on('layoutComplete', (layout) => {
@@ -113,7 +113,7 @@ export default Component.extend({
   },
 
   _destroyMasonry() {
-    const masonry = get(this, 'masonry');
+    let masonry = get(this, 'masonry');
 
     if (masonry) {
       masonry.destroy();

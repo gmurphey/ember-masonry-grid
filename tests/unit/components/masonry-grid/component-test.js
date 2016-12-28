@@ -44,7 +44,7 @@ test('the options hash updates when masonry properties are changed', function(as
   assert.equal(component.get('options.transitionDuration'), '0.5s');
 });
 
-test('didUpdateAttrs calls super and destroys masonry if any options have changed', function(assert) {
+test('didUpdateAttrs destroys masonry if any options have changed', function(assert) {
   let component = this.subject();
   let args = [{
     oldAttrs: {
@@ -55,13 +55,9 @@ test('didUpdateAttrs calls super and destroys masonry if any options have change
     }
   }];
 
-  component._super = sinon.stub();
   component._destroyMasonry = sinon.stub();
 
   component.didUpdateAttrs(...args);
-
-  assert.ok(component._super.calledOnce, '_super was called once');
-  assert.deepEqual(component._super.args[0], args, '_super was called with the attrs passed to didUpdateAttrs');
 
   assert.ok(component._destroyMasonry.calledOnce, 'masonry was destroyed');
 });
@@ -77,13 +73,9 @@ test('didUpdateAttrs does nothing if no masonry-specific options were changed', 
     }
   }];
 
-  component._super = sinon.stub();
   component._destroyMasonry = sinon.stub();
 
   component.didUpdateAttrs(...args);
-
-  assert.ok(component._super.calledOnce, '_super was called once');
-  assert.deepEqual(component._super.args[0], args, '_super was called with the attrs passed to didUpdateAttrs');
 
   assert.ok(component._destroyMasonry.notCalled, 'masonry is not destroyed');
 });

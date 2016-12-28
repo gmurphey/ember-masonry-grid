@@ -3,13 +3,15 @@ import Ember from 'ember';
 const {
   Controller,
   get,
-  set
+  set,
+  run,
+  computed
 } = Ember;
 
 export default Controller.extend({
   first: true,
 
-  currentObject: Ember.computed('first', 'model', function() {
+  currentObject: computed('first', 'model', function() {
     let modelIndex = this.get('first') ? 0 : 1;
 
     return this.get('model').objectAt(modelIndex);
@@ -21,8 +23,8 @@ export default Controller.extend({
     },
 
     switchGutter() {
-      const gutter = get(this, 'gutter');
-      const newGutter = (gutter === 10) ? 0 : 10;
+      let gutter = get(this, 'gutter');
+      let newGutter = (gutter === 10) ? 0 : 10;
 
       set(this, 'gutter', newGutter);
     },
@@ -36,7 +38,7 @@ export default Controller.extend({
     },
 
     onItemClick(ev, item) {
-      Ember.run(() => {
+      run(() => {
         get(this, 'currentObject').removeObject(item);
       });
     }

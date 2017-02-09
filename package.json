@@ -43,7 +43,7 @@
   "dependencies": {
     "ember-cli-babel": "^5.1.7",
     "ember-cli-htmlbars": "^1.0.1",
-    "ember-imagesloaded-shim": "^0.0.5"
+    "ember-imagesloaded-shim": "^0.0.6"
   },
   "description": "Quickly and easily add masonry layouts to your app.",
   "keywords": [

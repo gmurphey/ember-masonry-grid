@@ -1,6 +1,6 @@
 /* global Masonry */
 import Ember from 'ember';
-import imagesLoaded from 'npm:imagesloaded';
+import imagesLoaded from 'imagesloaded';
 import layout from './template';
 
 const {

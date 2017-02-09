@@ -38,14 +38,12 @@
     "ember-sinon": "^0.5.1",
     "ember-suave": "^4.0.0",
     "ember-welcome-page": "^1.0.3",
-    "imagesloaded": "^4.1.1",
     "loader.js": "^4.0.10"
   },
   "dependencies": {
-    "ember-browserify": "^1.1.13",
     "ember-cli-babel": "^5.1.7",
     "ember-cli-htmlbars": "^1.0.1",
-    "rsvp": "^3.3.3"
+    "ember-imagesloaded-shim": "^0.0.5"
   },
   "description": "Quickly and easily add masonry layouts to your app.",
   "keywords": [

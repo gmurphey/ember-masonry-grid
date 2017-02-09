@@ -12,11 +12,6 @@ module.exports = {
         development: app.bowerDirectory + '/masonry/dist/masonry.pkgd.js',
         production: app.bowerDirectory + '/masonry/dist/masonry.pkgd.min.js'
       });
-
-      app.import({
-        development: app.bowerDirectory + '/imagesloaded/imagesloaded.pkgd.js',
-        production: app.bowerDirectory + '/imagesloaded/imagesloaded.pkgd.min.js'
-      });
     }
   }
 };

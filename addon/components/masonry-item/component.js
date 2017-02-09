@@ -4,12 +4,9 @@ import layout from './template';
 const {
   Component,
   computed,
-  get
+  get,
+  String: { htmlSafe }
 } = Ember;
-
-const {
-  htmlSafe
-} = Ember.String;
 
 export default Component.extend({
   layout,
@@ -21,8 +18,8 @@ export default Component.extend({
   itemClass: computed.oneWay('grid.itemClass'),
 
   click(ev) {
-    const onItemClick = get(this, 'onItemClick');
-    const item = get(this, 'item');
+    let onItemClick = get(this, 'onItemClick');
+    let item = get(this, 'item');
 
     if (onItemClick && typeof onItemClick === 'function') {
       onItemClick(ev, item);

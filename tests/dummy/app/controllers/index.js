@@ -3,6 +3,7 @@ import Ember from 'ember';
 const {
   Controller,
   get,
+  Logger: { info },
   set
 } = Ember;
 
@@ -28,11 +29,11 @@ export default Controller.extend({
     },
 
     onLayout() {
-      console.log('onLayout', arguments);
+      info('onLayout', arguments);
     },
 
     onLayoutComplete() {
-      console.log('onLayoutComplete', arguments);
+      info('onLayoutComplete', arguments);
     },
 
     onItemClick(ev, item) {

@@ -38,7 +38,7 @@ test('it renders a default layout', function(assert) {
   assert.equal($items.length, 2, 'there is a masonry-item for every item');
 
   $items.each(function(index) {
-    assert.equal($(this).text().trim(), items[index].name);
+    assert.equal(Ember.$(this).text().trim(), items[index].name);
   });
 });
 
@@ -88,7 +88,7 @@ test('it renders a custom layout', function(assert) {
   assert.equal($items.length, 2, 'there is a masonry-item for every item');
 
   $items.each(function(index) {
-    assert.equal($(this).text().trim(), items[index].name);
+    assert.equal(Ember.$(this).text().trim(), items[index].name);
   });
 });
 
@@ -129,4 +129,3 @@ test('it triggers a click event when an item is clicked', function(assert) {
     {{/masonry-grid}}
   `);
 });
-

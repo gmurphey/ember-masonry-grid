@@ -2,6 +2,12 @@ import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
+const {
+  $,
+  A,
+  run
+} = Ember;
+
 let items;
 
 moduleForComponent('masonry-grid', 'Integration | Component | masonry grid', {
@@ -16,13 +22,12 @@ moduleForComponent('masonry-grid', 'Integration | Component | masonry grid', {
 });
 
 test('it renders a default layout', function(assert) {
-  let $grid;
-  let $items;
+  let $grid, $items;
 
   assert.expect(4);
 
-  Ember.run(() => {
-    this.set('items', Ember.A(items));
+  run(() => {
+    this.set('items', A(items));
   });
 
   this.render(hbs`
@@ -38,7 +43,7 @@ test('it renders a default layout', function(assert) {
   assert.equal($items.length, 2, 'there is a masonry-item for every item');
 
   $items.each(function(index) {
-    assert.equal(Ember.$(this).text().trim(), items[index].name);
+    assert.equal($(this).text().trim(), items[index].name);
   });
 });
 
@@ -47,8 +52,8 @@ test('the masonry-item class is based on the itemSelector passed to masonry-grid
 
   assert.expect(1);
 
-  Ember.run(() => {
-    this.set('items', Ember.A(items));
+  run(() => {
+    this.set('items', A(items));
     this.set('customSelector', '.piece');
   });
 
@@ -64,13 +69,12 @@ test('the masonry-item class is based on the itemSelector passed to masonry-grid
 });
 
 test('it renders a custom layout', function(assert) {
-  let $grid;
-  let $items;
+  let $grid, $items;
 
   assert.expect(4);
 
-  Ember.run(() => {
-    this.set('items', Ember.A(items));
+  run(() => {
+    this.set('items', A(items));
   });
 
   this.render(hbs`
@@ -88,15 +92,15 @@ test('it renders a custom layout', function(assert) {
   assert.equal($items.length, 2, 'there is a masonry-item for every item');
 
   $items.each(function(index) {
-    assert.equal(Ember.$(this).text().trim(), items[index].name);
+    assert.equal($(this).text().trim(), items[index].name);
   });
 });
 
 test('it triggers masonry\'s layoutComplete event after rendering', function(assert) {
   assert.expect(1);
 
-  Ember.run(() => {
-    this.set('items', Ember.A(items));
+  run(() => {
+    this.set('items', A(items));
     this.on('layoutComplete', () => {
       assert.ok(true, 'layoutComplete action called');
     });
@@ -112,7 +116,7 @@ test('it triggers masonry\'s layoutComplete event after rendering', function(ass
 test('it triggers a click event when an item is clicked', function(assert) {
   assert.expect(1);
 
-  this.set('items', Ember.A(items));
+  this.set('items', A(items));
 
   this.on('itemClicked', (ev, item) => {
     assert.deepEqual(this.get('items.firstObject'), item);

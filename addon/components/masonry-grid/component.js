@@ -3,19 +3,18 @@ import Ember from 'ember';
 import layout from './template';
 
 const {
+  A,
   Component,
   computed,
   defineProperty,
   getProperties,
   get,
-  set
+  run: { scheduleOnce },
+  set,
+  String: { htmlSafe }
 } = Ember;
 
-const {
-  htmlSafe
-} = Ember.String;
-
-const MASONRY_OPTION_KEYS = Ember.A([
+const MASONRY_OPTION_KEYS = A([
   'containerStyle',
   'columnWidth',
   'gutter',
@@ -73,7 +72,7 @@ export default Component.extend({
 
     let masonry = get(this, 'masonry');
 
-    Ember.run.scheduleOnce('afterRender', this, () => {
+    scheduleOnce('afterRender', this, () => {
       imagesLoaded(get(this, 'element'), () => {
         if (masonry) {
           masonry.reloadItems();

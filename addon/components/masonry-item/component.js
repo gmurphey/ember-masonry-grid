@@ -4,12 +4,9 @@ import layout from './template';
 const {
   Component,
   computed,
-  get
+  get,
+  String: { htmlSafe }
 } = Ember;
-
-const {
-  htmlSafe
-} = Ember.String;
 
 export default Component.extend({
   layout,

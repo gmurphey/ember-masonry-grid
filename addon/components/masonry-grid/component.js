@@ -7,9 +7,11 @@ const {
   A,
   Component,
   computed,
+  computed: { alias },
   defineProperty,
   getProperties,
   get,
+  inject: { service },
   run: { scheduleOnce },
   set,
   String: { htmlSafe }
@@ -34,6 +36,9 @@ const MASONRY_OPTION_KEYS = A([
 export default Component.extend({
   layout,
   classNames: ['masonry-grid'],
+
+  masonryConfig: service(),
+  config: alias('masonryConfig.config'),
 
   // masonry default options
   // overriding the default `isInitLayout` value allows us to attach an event for
@@ -69,23 +74,32 @@ export default Component.extend({
 
     let masonry = get(this, 'masonry');
 
+    this.executeAfter(() => {
+      if (masonry) {
+        masonry.reloadItems();
+      } else {
+        const options = get(this, 'options');
+        masonry = set(this, 'masonry', new Masonry(get(this, 'element'), options));
+
+        masonry.on('layoutComplete', (layout) => {
+          if (!get(this, 'isDestroyed') && !get(this, 'isDestroying')) {
+            this.sendAction('onLayoutComplete', layout);
+          }
+        });
+      }
+      masonry.layout();
+    });
+  },
+
+  executeAfter(cb) {
     scheduleOnce('afterRender', this, () => {
-      imagesLoaded(get(this, 'element'), () => {
-        if (masonry) {
-          masonry.reloadItems();
-        } else {
-          const options = get(this, 'options');
-          masonry = set(this, 'masonry', new Masonry(get(this, 'element'), options));
-
-          masonry.on('layoutComplete', (layout) => {
-            if (!get(this, 'isDestroyed') && !get(this, 'isDestroying')) {
-              this.sendAction('onLayoutComplete', layout);
-            }
-          });
-        }
-
-        masonry.layout();
-      });
+      if (get(this, 'config.imagesLoaded') === false) {
+        cb.call(this);
+      } else {
+        imagesLoaded(get(this, 'element'), () => {
+          cb.call(this);
+        });
+      }
     });
   },
 

@@ -31,6 +31,10 @@ module.exports = function(environment) {
     }
   };
 
+  ENV['ember-masonry-grid'] = {
+    imagesLoaded: true
+  };
+
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;

@@ -1,5 +1,6 @@
 /* global imagesLoaded, Masonry */
 import Ember from 'ember';
+import diffAttrs from 'ember-diff-attrs';
 import layout from './template';
 
 const {
@@ -55,17 +56,13 @@ export default Component.extend({
     defineProperty(this, 'options', computed.apply(this, [...MASONRY_OPTION_KEYS, this._computeOptions]));
   },
 
-  didUpdateAttrs(attrsObj) {
-    this._super(...arguments);
-
-    const shouldRebuild = MASONRY_OPTION_KEYS.any((option) => {
-      return (attrsObj.newAttrs[option] !== attrsObj.oldAttrs[option]);
-    });
-
-    if (shouldRebuild) {
+  didUpdateAttrs: diffAttrs({
+    keys: MASONRY_OPTION_KEYS,
+    hook(changedAttrs, ...args) {
+      this._super(...args);
       this._destroyMasonry();
     }
-  },
+  }),
 
   didRender() {
     this._super(...arguments);
@@ -81,7 +78,9 @@ export default Component.extend({
           masonry = set(this, 'masonry', new Masonry(get(this, 'element'), options));
 
           masonry.on('layoutComplete', (layout) => {
-            this.sendAction('onLayoutComplete', layout);
+            if (!get(this, 'isDestroyed') && !get(this, 'isDestroying')) {
+              this.sendAction('onLayoutComplete', layout);
+            }
           });
         }
 

@@ -1,9 +1,9 @@
 /* eslint-env node */
 
 module.exports = function(environment) {
-  var ENV = {
+  let ENV = {
     modulePrefix: 'dummy',
-    environment: environment,
+    environment,
     rootURL: '/',
     locationType: 'auto',
     EmberENV: {
@@ -16,10 +16,18 @@ module.exports = function(environment) {
         Date: false
       }
     },
-
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+    },
+    contentSecurityPolicy: {
+      'default-src': ["'none'"],
+      'script-src': ["'self'"],
+      'font-src': ["'self'"],
+      'connect-src': ["'self'"],
+      'img-src': ["'self'", 'http://placehold.it', 'https://placeholdit.imgix.net'],
+      'style-src': ["'self'", "'unsafe-inline'"],
+      'media-src': ["'self'"]
     }
   };
 
@@ -43,7 +51,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-
+    // ENV
   }
 
   return ENV;

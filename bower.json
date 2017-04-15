@@ -1,8 +1,4 @@
 {
   "name": "ember-masonry-grid",
-  "dependencies": {
-    "imagesloaded": "~3.2.0",
-    "masonry": "~3.3.2",
-    "sinonjs": "~1.17.1"
-  }
+  "dependencies": {}
 }

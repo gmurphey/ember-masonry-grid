@@ -43,12 +43,12 @@ module.exports = {
 
     trees.push(moduleToFunnel('masonry-layout', {
       srcDir: 'dist',
-      include: ['*.pkgd.js'],
+      include: ['*.pkgd.js', '*.pkgd.min.js'],
       destDir: 'masonry'
     }));
 
     trees.push(moduleToFunnel('imagesloaded', {
-      include: ['*.pkgd.js'],
+      include: ['*.pkgd.js', '*.pkgd.min.js'],
       destDir: 'imagesloaded'
     }));
 

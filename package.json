@@ -39,7 +39,8 @@
   },
   "dependencies": {
     "ember-cli-babel": "^5.1.5",
-    "ember-cli-htmlbars": "^1.0.1"
+    "ember-cli-htmlbars": "^1.0.1",
+    "fastboot-transform": "^0.1.2"
   },
   "description": "Quickly and easily add masonry layouts to your app.",
   "keywords": [

@@ -1,7 +1,9 @@
 import Ember from 'ember';
 
 const {
-  Route
+  A,
+  Route,
+  run
 } = Ember;
 
 export default Route.extend({
@@ -11,9 +13,9 @@ export default Route.extend({
   },
 
   model() {
-    let model = Ember.A([
-      Ember.A(),
-      Ember.A()
+    let model = A([
+      A(),
+      A()
     ]);
 
     model.forEach((obj) => {
@@ -36,13 +38,13 @@ export default Route.extend({
   },
 
   _appendItemToModel(model) {
-    Ember.run(() => {
+    run(() => {
       model.pushObject(Object.create(this.get('item')));
     });
   },
 
   _prependItemToModel(model) {
-    Ember.run(() => {
+    run(() => {
       model.insertAt(0, Object.create(this.get('item')));
     });
   }

@@ -1,21 +1,23 @@
 /* global imagesLoaded, Masonry */
 import Ember from 'ember';
+import diffAttrs from 'ember-diff-attrs';
 import layout from './template';
 
 const {
+  A,
   Component,
   computed,
+  computed: { alias },
   defineProperty,
   getProperties,
   get,
-  set
+  inject: { service },
+  run: { scheduleOnce },
+  set,
+  String: { htmlSafe }
 } = Ember;
 
-const {
-  htmlSafe
-} = Ember.String;
-
-const MASONRY_OPTION_KEYS = Ember.A([
+const MASONRY_OPTION_KEYS = A([
   'containerStyle',
   'columnWidth',
   'gutter',
@@ -34,6 +36,9 @@ const MASONRY_OPTION_KEYS = Ember.A([
 export default Component.extend({
   layout,
   classNames: ['masonry-grid'],
+
+  masonryConfig: service(),
+  config: alias('masonryConfig.config'),
 
   // masonry default options
   // overriding the default `isInitLayout` value allows us to attach an event for
@@ -56,38 +61,45 @@ export default Component.extend({
     defineProperty(this, 'options', computed.apply(this, [...MASONRY_OPTION_KEYS, this._computeOptions]));
   },
 
-  didUpdateAttrs(attrsObj) {
-    this._super(...arguments);
-
-    const shouldRebuild = MASONRY_OPTION_KEYS.any((option) => {
-      return (attrsObj.newAttrs[option] !== attrsObj.oldAttrs[option]);
-    });
-
-    if (shouldRebuild) {
+  didUpdateAttrs: diffAttrs({
+    keys: MASONRY_OPTION_KEYS,
+    hook(changedAttrs, ...args) {
+      this._super(...args);
       this._destroyMasonry();
     }
-  },
+  }),
 
   didRender() {
     this._super(...arguments);
 
     let masonry = get(this, 'masonry');
 
-    Ember.run.scheduleOnce('afterRender', this, () => {
-      imagesLoaded(get(this, 'element'), () => {
-        if (masonry) {
-          masonry.reloadItems();
-        } else {
-          const options = get(this, 'options');
-          masonry = set(this, 'masonry', new Masonry(get(this, 'element'), options));
+    this.executeAfter(() => {
+      if (masonry) {
+        masonry.reloadItems();
+      } else {
+        const options = get(this, 'options');
+        masonry = set(this, 'masonry', new Masonry(get(this, 'element'), options));
 
-          masonry.on('layoutComplete', (layout) => {
+        masonry.on('layoutComplete', (layout) => {
+          if (!get(this, 'isDestroyed') && !get(this, 'isDestroying')) {
             this.sendAction('onLayoutComplete', layout);
-          });
-        }
+          }
+        });
+      }
+      masonry.layout();
+    });
+  },
 
-        masonry.layout();
-      });
+  executeAfter(cb) {
+    scheduleOnce('afterRender', this, () => {
+      if (get(this, 'config.imagesLoaded') === false) {
+        cb.call(this);
+      } else {
+        imagesLoaded(get(this, 'element'), () => {
+          cb.call(this);
+        });
+      }
     });
   },
 

@@ -2,14 +2,17 @@ import Ember from 'ember';
 
 const {
   Controller,
+  computed,
   get,
+  Logger: { info },
+  run,
   set
 } = Ember;
 
 export default Controller.extend({
   first: true,
 
-  currentObject: Ember.computed('first', 'model', function() {
+  currentObject: computed('first', 'model', function() {
     let modelIndex = this.get('first') ? 0 : 1;
 
     return this.get('model').objectAt(modelIndex);
@@ -28,15 +31,15 @@ export default Controller.extend({
     },
 
     onLayout() {
-      console.log('onLayout', arguments);
+      info('onLayout', arguments);
     },
 
     onLayoutComplete() {
-      console.log('onLayoutComplete', arguments);
+      info('onLayoutComplete', arguments);
     },
 
     onItemClick(ev, item) {
-      Ember.run(() => {
+      run(() => {
         get(this, 'currentObject').removeObject(item);
       });
     }
